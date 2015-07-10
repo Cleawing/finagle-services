@@ -3,14 +3,14 @@ import sbt._
 import sbt.Keys._
 
 object Build extends MechaRepoBuild {
-  lazy val buildSettings = Defaults.defaultSettings ++
+  lazy val buildSettings = Defaults.coreDefaultSettings ++
     MechaRepoPlugin.defaultSettings ++ Seq(
     name := "finagle-services",
     scalaVersion := "2.11.7",
     version := "0.1",
     organization := "com.cleawing",
     libraryDependencies ++= superRepoDependencies("finagle-services") ++ Dependencies.finch ++
-      Seq(Dependencies.bouncyCastleProvider, Dependencies.scalaTest)
+      Seq(Dependencies.typesafeConfig, Dependencies.bouncyCastleProvider, Dependencies.scalaTest)
   )
 
   def repoName = "finagle-services"
