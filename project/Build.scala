@@ -9,7 +9,7 @@ object Build extends MechaRepoBuild {
     scalaVersion := "2.11.7",
     version := "0.1",
     organization := "com.cleawing",
-    libraryDependencies ++= superRepoDependencies("finagle-services") ++ Dependencies.finch ++
+    libraryDependencies ++= superRepoDependencies("finagle-services") ++ Dependencies.finagle ++
       Seq(Dependencies.typesafeConfig, Dependencies.bouncyCastleProvider, Dependencies.scalaTest)
   )
 

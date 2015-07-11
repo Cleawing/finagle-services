@@ -1,4 +1,4 @@
-package com.cleawing.finch
+package com.cleawing.finagle.http
 
 import java.io.{File, FileReader, BufferedReader, FileInputStream}
 import java.security.cert.{CertificateFactory, Certificate}

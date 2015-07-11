@@ -1,4 +1,4 @@
-package com.cleawing.finch
+package com.cleawing.finagle.http
 
 import com.typesafe.config.ConfigFactory
 import org.scalatest.{BeforeAndAfterEach, FeatureSpec, GivenWhenThen, ShouldMatchers}
