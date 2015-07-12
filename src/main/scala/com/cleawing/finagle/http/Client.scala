@@ -5,6 +5,7 @@ import com.twitter.finagle.httpx.{Http, Status, Request, Response}
 import com.twitter.finagle.{ChannelClosedException, ChannelWriteException, Service}
 
 import scala.concurrent.{Promise, Future}
+import scalaz.{\/, -\/, \/-}
 
 trait Client {
   val host: String
@@ -25,7 +26,7 @@ trait Client {
     }).build
   }
 
-  def simpleGet(uri: String) : Future[Either[Client.Failure, Client.Response]] = {
+  def simpleGet(uri: String) : Future[Client.Failure \/ Client.Response] = {
     doSimpleRequest(Request(uri))
   }
 
@@ -35,16 +36,16 @@ trait Client {
     promise.future
   }
 
-  private def doSimpleRequest(request: Request) : Future[Either[Client.Failure, Client.Response]] = {
-    val promise = Promise[Either[Client.Failure, Client.Response]]()
+  private def doSimpleRequest(request: Request) : Future[Client.Failure \/ Client.Response] = {
+    val promise = Promise[Client.Failure \/ Client.Response]()
 
     client(request).onSuccess { resp =>
       resp.status match {
-        case Status.Ok => promise.success(Right(Client.Success(resp.status, resp.getContentString())))
-        case other => promise.success(Right(Client.Error(resp.status, resp.getContentString())))
+        case Status.Ok => promise.success(\/-(Client.Success(resp.status, resp.getContentString())))
+        case other => promise.success(\/-(Client.Error(resp.status, resp.getContentString())))
       }
     }.onFailure {
-      case ex @ (_: ChannelWriteException | _: ChannelClosedException) => promise.success(Left(Client.Failure(ex)))
+      case ex @ (_: ChannelWriteException | _: ChannelClosedException) => promise.success(-\/(Client.Failure(ex)))
       case t: Throwable => promise.failure(t)
     }
 
