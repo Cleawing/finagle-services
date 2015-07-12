@@ -2,7 +2,7 @@ package com.cleawing.finagle.http
 
 import com.twitter.finagle.builder.ClientBuilder
 import com.twitter.finagle.httpx.{Http, Status, Request, Response}
-import com.twitter.finagle.{ChannelClosedException, ChannelWriteException, Service}
+import com.twitter.finagle.Service
 
 import scala.concurrent.{Promise, Future}
 import scalaz.{\/, -\/, \/-}
@@ -44,10 +44,7 @@ trait Client {
         case Status.Ok => promise.success(\/-(Client.Success(resp.status, resp.getContentString())))
         case other => promise.success(\/-(Client.Error(resp.status, resp.getContentString())))
       }
-    }.onFailure {
-      case ex @ (_: ChannelWriteException | _: ChannelClosedException) => promise.success(-\/(Client.Failure(ex)))
-      case t: Throwable => promise.failure(t)
-    }
+    }.onFailure(ex => promise.success(-\/(Client.Failure(ex))))
 
     promise.future
   }
