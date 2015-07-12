@@ -10,7 +10,8 @@ object Build extends MechaRepoBuild {
     version := "0.1",
     organization := "com.cleawing",
     libraryDependencies ++= superRepoDependencies("finagle-services") ++ Dependencies.finagle ++
-      Seq(Dependencies.typesafeConfig, Dependencies.bouncyCastleProvider, Dependencies.scalaTest)
+      Seq(Dependencies.typesafeConfig, Dependencies.scalaz, Dependencies.json4s, Dependencies.jackson,
+        Dependencies.bouncyCastleProvider, Dependencies.scalaTest, Dependencies.scalazScalaTest)
   )
 
   def repoName = "finagle-services"
